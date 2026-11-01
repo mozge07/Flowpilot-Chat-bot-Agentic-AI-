@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import FAQ from "../models/faq.model.js";
+import { generateFaqEmbedding } from "../services/embedding.service.js";
 
 // Create FAQ
 export const createFaqController = async (req, res) => {
@@ -89,6 +90,7 @@ export const getFaqByIdController = async (req, res) => {
   }
 };
 
+// Update FAQ
 export const updateFaqController = async (req, res) => {
   try {
     const { faqId } = req.params;
@@ -101,11 +103,14 @@ export const updateFaqController = async (req, res) => {
       });
     }
 
-    const faq = await FAQ.findByIdAndUpdate(
-      faqId,
-      { question, answer, category },
-      { new: true, runValidators: true }
-    );
+    if (!question || !answer || !category) {
+      return res.status(400).json({
+        success: false,
+        message: "Question, answer and category are required",
+      });
+    }
+
+    const faq = await FAQ.findById(faqId);
 
     if (!faq) {
       return res.status(404).json({
@@ -113,6 +118,19 @@ export const updateFaqController = async (req, res) => {
         message: "FAQ not found",
       });
     }
+
+    const embedding = await generateFaqEmbedding({
+      question,
+      answer,
+      category,
+    });
+
+    faq.question = question;
+    faq.answer = answer;
+    faq.category = category;
+    faq.embedding = embedding;
+
+    await faq.save();
 
     return res.status(200).json({
       success: true,

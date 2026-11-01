@@ -17,6 +17,10 @@ const faqSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    embedding:{
+      type: [Number],
+      default: []
+    },
   },
   { timestamps: true }
 );

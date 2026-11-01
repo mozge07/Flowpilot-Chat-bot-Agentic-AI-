@@ -1,5 +1,7 @@
 
+import dns from "node:dns";
 import "dotenv/config";
+
 import express from "express";
 import cors from "cors";
 
@@ -7,6 +9,14 @@ import aiRouter from "./routes/ai.routes.js";
 import faqRouter from "./routes/faq.routes.js";
 import connectDB from "./config/db.js";
 
+// Optional DNS configuration for systems with DNS resolution issues
+if (process.env.DNS_SERVERS) {
+  const dnsServers = process.env.DNS_SERVERS.split(",").map(
+    (server) => server.trim()
+  );
+
+  dns.setServers(dnsServers);
+}
 
 const app = express();
 
