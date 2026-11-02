@@ -10,10 +10,19 @@ export const searchFaq = tool(
       console.log("FAQ Search Query:", query);
 
       // Generate embedding for the customer's question
+
+      const embeddingStart = Date.now();
+
       const queryEmbedding = await generateEmbedding(query);
 
+      console.log("FAQ Embedding Generated in", Date.now() - embeddingStart, "ms");
+
       // Search for similar FAQs using vector search
+      const searchStart = Date.now();
+
       const results = await searchSimilarFaqs(queryEmbedding);
+
+      console.log("FAQ Search Completed in", Date.now() - searchStart, "ms");
 
       console.log("FAQ Results Found:", results.length);
 

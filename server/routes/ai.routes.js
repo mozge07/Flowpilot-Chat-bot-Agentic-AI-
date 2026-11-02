@@ -13,10 +13,18 @@ router.post("/chat", async (req, res) => {
         message: "Please provide a valid message."
       });
     }
+    
+    const agentStart = Date.now();
 
     const result = await supportAgent.invoke({
       messages: [{ role: "user", content: message }]
     });
+    
+    console.log(
+      "Total Agent Execution:",
+      Date.now() - agentStart,
+      "ms"
+    );
 
     const lastMessage = result.messages.at(-1);
 
