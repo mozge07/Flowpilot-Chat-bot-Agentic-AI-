@@ -14,10 +14,17 @@ export const createFaqController = async (req, res) => {
       });
     }
 
+    const embedding = await generateFaqEmbedding({
+      question,
+      answer,
+      category,
+    });
+
     const faq = await FAQ.create({
       question,
       answer,
       category,
+      embedding,
     });
 
     return res.status(201).json({
@@ -147,6 +154,7 @@ export const updateFaqController = async (req, res) => {
   }
 };
 
+// delete faq
 export const deleteFaqController = async (req, res) => {
   try {
     const { faqId } = req.params;
