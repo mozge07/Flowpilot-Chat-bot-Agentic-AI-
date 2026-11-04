@@ -7,6 +7,8 @@ import cors from "cors";
 
 import aiRouter from "./routes/ai.routes.js";
 import faqRouter from "./routes/faq.routes.js";
+import conversationRouter from "./routes/conversation.routes.js";
+import messageRouter from "./routes/message.routes.js";
 import connectDB from "./config/db.js";
 
 // Optional DNS configuration for systems with DNS resolution issues
@@ -27,6 +29,8 @@ app.use(express.json());
 // Routes
 app.use("/api/ai", aiRouter);
 app.use("/api/faqs", faqRouter);
+app.use("/api/conversations", conversationRouter);
+app.use("/api/messages", messageRouter);
 
 // Health check
 app.get("/api/health", (req, res) => {

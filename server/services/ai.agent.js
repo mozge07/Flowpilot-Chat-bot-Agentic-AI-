@@ -2,11 +2,32 @@ import "dotenv/config";
 import { createAgent } from "langchain";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { searchFaq } from "../tools/faq.tools.js";
+import { BaseCallbackHandler } from "@langchain/core/callbacks/base";
+
+const timingHandler = BaseCallbackHandler.fromMethods({
+  handleLLMStart() {
+    this.startTime = Date.now();
+    console.log("Gemini model call started");
+  },
+
+  handleLLMEnd() {
+    console.log(
+      "Gemini model call completed:",
+      Date.now() - this.startTime,
+      "ms"
+    );
+  },
+
+  handleLLMError(error) {
+    console.error("Gemini model error:", error.message);
+  },
+});
 
 const model = new ChatGoogleGenerativeAI({
   model: process.env.GEMINI_MODEL || "gemini-3.5-flash-lite",
   apiKey: process.env.GEMINI_API_KEY,
-  temperature: 0.2
+  temperature: 0.2,
+  callbacks: [timingHandler],
 });
 
 export const supportAgent = createAgent({
