@@ -1,0 +1,14 @@
+:root {
+  --sidebar-bg: #11101C;
+  --sidebar-hover: #211D35;
+  --workspace-bg: #F8F6FC;
+  --surface: #FFFFFF;
+
+  --primary: #7546DB;
+  --primary-hover: #6035C0;
+  --accent: #B49AF5;
+
+  --text-primary: #211D30;
+  --text-secondary: #858095;
+  --sidebar-text: #F8F6FC;
+}

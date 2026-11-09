@@ -14,7 +14,7 @@ function Sidebar(){
             <button className="new-chat">New Chat</button>
 
             <nav className="sidebar-nav">
-                <button className="nav-item">Home</button>
+                <button className="nav-item active">Home</button>
                 <button className="nav-item">Conversation</button>
                 <button className="nav-item">Knowledge Base</button>
                 <button className="nav-item">Setting</button>
@@ -24,13 +24,22 @@ function Sidebar(){
                 <h2>Recent Chat</h2>
                 <ul className="recent-list">
                     {chats.map((chat) => {
-                        return <li key={chat}>{chat}</li>;
+                        return <li key={chat}>
+                            <button className="recent-chat">
+                                <span className="chat-icon">◻</span>
+                                <span>{chat}</span>
+                            </button>
+                        </li>;
                     })}
                 </ul>
             </div>
 
             <div className="profile-section">
-                Monish <span>Account</span>
+                <div className="profile-avatar">M</div>
+                <div className="profile-info">
+                    <strong>Monish</strong>
+                    <span>Personal Account</span>
+                </div>
             </div>
         </aside>
     )

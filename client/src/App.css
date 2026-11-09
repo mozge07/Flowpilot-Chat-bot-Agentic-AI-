@@ -24,15 +24,15 @@ html, body{
   gap: 20px;
   width: 20%;
   min-height: 100vh;
-  background-color: #2a5cc2;
-  color: white;
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
 }
 
 .main-workspace{
   flex: 1;
   min-height: 100vh;
-  background-color: #f2f2f2;
-  color: #333;
+  background-color: var(--workspace-bg);
+  color: var(--text-primary);
 }
 
 .profile-section{
@@ -59,7 +59,8 @@ html, body{
 
 .nav-item{
   width: 100%;
-  padding: 10px;
+  padding: 11px 12px;
+  font-size: 14px;
   border: none;
   border-radius: 8px;
   text-align: left;
@@ -69,16 +70,190 @@ html, body{
   transition: background 0.2s ease;
 }
 
+.nav-item.active {
+  background: var(--sidebar-hover);
+  color: white;
+}
+
 .nav-item:hover{
-  background: rgb(255, 255, 255, 0.15);
+  background: var(--sidebar-hover);
 }
 
 .new-chat{
   padding: 12px;
   border: none;
   border-radius: 10px;
-  background-color:#ab90e0;
+  background: linear-gradient(135deg, #7546DB, #9168E8);
   color: white;
   font-weight: 600;
   cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.new-chat:hover{
+  filter: brightness(0.9);
+  background: var(--sidebar-hover);
+}
+
+.recent-list{
+  list-style: none;
+  padding: 0;
+  gap: 6px;
+}
+
+.recent-section h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--sidebar-text);
+}
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+}
+
+.recent-chat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.recent-chat:hover {
+  background: var(--sidebar-hover);
+  color: white;
+}
+
+.chat-icon {
+  flex-shrink: 0;
+  font-size: 15px;
+}
+
+/* Profile card */
+.profile-section {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: var(--sidebar-hover);
+}
+
+.profile-avatar {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.profile-info strong {
+  font-size: 13px;
+  color: var(--sidebar-text);
+}
+
+.profile-info span {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* Recent chat hover */
+.recent-chat:hover {
+  background: var(--sidebar-hover);
+}
+
+/* Section separator */
+.recent-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 18px;
+}
+
+/* Main-Content*/
+
+.main-workspace {
+  flex: 1;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: var(--workspace-bg);
+  color: var(--text-primary);
+}
+
+.welcome-screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  z-index: 1;
+}
+
+.welcome-content h1 {
+  font-size: 46px;
+  font-weight: 700;
+}
+
+.welcome-content h1 span {
+  background: linear-gradient(135deg, #7546DB, #6485F5);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-content p {
+  color: var(--text-secondary);
+  font-size: 20px;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 500px;
+  height: 250px;
+  bottom: -180px;
+  background: #B49AF5;
+  filter: blur(100px);
+  opacity: 0.35;
+  border-radius: 50%;
+}
+
+.ai-orb {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #70C9FF, #7546DB 65%, #B49AF5);
+  box-shadow: 0 0 35px rgba(117, 70, 219, 0.3);
 }
