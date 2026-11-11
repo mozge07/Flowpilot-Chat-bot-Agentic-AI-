@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function ChatInput() {
+function ChatInput({ onSend }) {
 
     const [message, setMessage] = useState("")
 
@@ -10,6 +10,7 @@ function ChatInput() {
         if (!message.trim()) return;
 
         console.log(message);
+        onSend(message);
         setMessage("");
     }
 
@@ -21,7 +22,7 @@ function ChatInput() {
             value={message}
             onChange={(e) => {setMessage(e.target.value)}}
             />
-            <button type="submit"></button>
+            <button type="submit">Send</button>
         </form>
     )
 }
