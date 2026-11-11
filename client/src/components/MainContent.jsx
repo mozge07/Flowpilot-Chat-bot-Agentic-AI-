@@ -1,96 +1,62 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
-import ChatInput from "./ChatInput";
+import "./MainContent.css";
 
 function MainContent() {
-  const [hasStarted, setHasStarted] = useState(false);
-  const [messages, setMessages] = useState([]);
-
-  const handleSend = (message) => {
-    setMessages((prevMessages) => [
-            ...prevMessages,
-            {role: "user", content: message}
-    ]);
-    setHasStarted(true)
-  }
-
   return (
     <main className="main-workspace">
-      <AnimatePresence mode="wait">
-        {hasStarted ? (
-          <motion.section
-            key="chat"
-            className="chat-screen"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.35 }}
-          >
-                <div className="messages-container">
-                    {messages.map((msg, index) => (
-                        <div 
-                        key={index} 
-                        className={`message ${msg.role}`}
-                        >
-                            {msg.content}
-                        </div>
-                    ))}
-                </div>
-                
-                <ChatInput onSend={handleSend} />
+      <section className="dashboard">
 
-          </motion.section>
-        ) : (
-          <motion.section
-            key="welcome"
-            className="welcome-screen"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.35 }}
-          >
-            <div className="hero-glow"></div>
+        <header className="dashboard-header">
+          <div>
+            <h1>Welcome back, Monish!</h1>
+            <p>Here's what's happening with your AI support.</p>
+          </div>
 
-            <div className="welcome-content">
-              <motion.div
-                className="ai-orb"
-                animate={{
-                  y: [0, -10, 0],
-                  scale: [1, 1.06, 1],
-                  rotate: [0, 360],
-                }}
-                transition={{
-                  y: {
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  },
-                  scale: {
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  },
-                  rotate: {
-                    duration: 12,
-                    repeat: Infinity,
-                    ease: "linear",
-                  },
-                }}
-              />
+          <button className="create-agent-btn">
+            + Create AI Agent
+          </button>
+        </header>
 
-              <h1>
-                Hey, <span>Monish!</span>
-              </h1>
+        <div className="dashboard-cards">
+          <div className="dashboard-card">
+            <span>AI Agents</span>
+            <h2>01</h2>
+            <p>Manage your AI agents</p>
+          </div>
 
-              <p>How can I assist you today?</p>
+          <div className="dashboard-card">
+            <span>Conversations</span>
+            <h2>24</h2>
+            <p>Customer interactions</p>
+          </div>
 
-              <ChatInput
-                onSend={handleSend}
-              />
+          <div className="dashboard-card">
+            <span>Knowledge Base</span>
+            <h2>12</h2>
+            <p>FAQs and documents</p>
+          </div>
+
+          <div className="dashboard-card">
+            <span>Agent Status</span>
+            <h2>Active</h2>
+            <p>Your agent is running</p>
+          </div>
+        </div>
+
+        <section className="agent-overview">
+          <h2>Your AI Agent</h2>
+          <p>Manage your customer support assistant.</p>
+
+          <div className="agent-card">
+            <div>
+              <h3>Customer Support Agent</h3>
+              <span>Active</span>
             </div>
-          </motion.section>
-        )}
-      </AnimatePresence>
+
+            <button>Manage Agent</button>
+          </div>
+        </section>
+
+      </section>
     </main>
   );
 }
