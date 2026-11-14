@@ -1,7 +1,7 @@
 
 import "./Sidebar.css";
 
-function Sidebar() {
+function Sidebar({  activePage, setActivePage}) {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
@@ -13,12 +13,24 @@ function Sidebar() {
       </button>
 
       <nav className="sidebar-nav">
-        <button className="nav-item active">Overview</button>
-        <button className="nav-item">AI Agents</button>
-        <button className="nav-item">Conversations</button>
-        <button className="nav-item">Knowledge Base</button>
-        <button className="nav-item">Integrations</button>
-        <button className="nav-item">Settings</button>
+        <button className={`nav-item ${activePage === "Overview" ? "active" : ""}`}
+        onClick={() => setActivePage("Overview")}
+        >Overview</button>
+        <button className={`nav-item ${activePage === "AI Agents" ? "active" : ""}`}
+        onClick={() => setActivePage("AI Agents")}
+        >AI Agents</button>
+        <button className={`nav-item ${activePage === "Conversations" ? "active" : ""}`}
+        onClick={() => setActivePage("Conversations")}
+        >Conversations</button>
+        <button className={`nav-item ${activePage === "Knowledge Base" ? "active" : ""}`}
+        onClick={() => setActivePage("Knowledge Base")}
+        >Knowledge Base</button>
+        <button className={`nav-item ${activePage === "Integrations" ? "active" : ""}`}
+        onClick={() => setActivePage("Integrations")}
+        >Integrations</button>
+        <button className={`nav-item ${activePage === "Settings" ? "active" : ""}`}
+        onClick={() => setActivePage("Settings")}
+        >Settings</button>
       </nav>
 
       <div className="recent-section">
