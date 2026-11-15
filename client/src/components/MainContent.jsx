@@ -1,9 +1,11 @@
 import "./MainContent.css";
+import AgentsPage from "./AgentsPage";
 
-function MainContent() {
-  return (
-    <main className="main-workspace">
-      <section className="dashboard">
+function MainContent({activePage}) {
+
+  const pages = {
+    Overview: (
+    <section className="dashboard">
 
         <header className="dashboard-header">
           <div>
@@ -56,7 +58,18 @@ function MainContent() {
           </div>
         </section>
 
-      </section>
+    </section>
+    ),
+    "AI Agents": <AgentsPage />,
+    Conversations: <h1>Conversation</h1>,
+    "Knowledge Base": <h1>Knowledge Base</h1>,
+    Integrations: <h1>Integration</h1>,
+    Settings: <h1>Setting</h1>
+  };
+
+  return (
+    <main className="main-workspace">
+      {pages[activePage]}
     </main>
   );
 }
