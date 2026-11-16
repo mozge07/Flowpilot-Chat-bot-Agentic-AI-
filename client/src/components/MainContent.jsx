@@ -1,5 +1,5 @@
 import "./MainContent.css";
-import AgentsPage from "./AgentsPage";
+import AgentsPage from "./AgentsPage.jsx";
 
 function MainContent({activePage}) {
 

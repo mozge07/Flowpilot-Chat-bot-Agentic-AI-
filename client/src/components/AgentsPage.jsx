@@ -5,6 +5,11 @@ import { useState } from "react";
 function AgentsPage(){
 
     const [isCreating, setIsCreating] = useState(false);
+    console.log(isCreating);
+
+    if(isCreating){
+        return <CreateAgent />;
+    }
 
     return (
         <section className="agents-page">
@@ -14,7 +19,9 @@ function AgentsPage(){
                     <p>Manage your AI Support agents.</p>
                 </div>
 
-                <button>+ Create New Agent</button>
+                <button onClick={() => setIsCreating(true)}>
+                    + Create New Agent
+                </button>
             </header>
             <div className="agents-list">
 
