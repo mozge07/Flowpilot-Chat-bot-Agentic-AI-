@@ -6,7 +6,9 @@
   width: 20%;
   min-width: 240px;
   max-width: 300px;
-  min-height: 100vh;
+  height: 100vh;
+  flex-shrink: 0;
+  overflow-y: auto;
   padding: 20px;
   background: var(--sidebar-bg);
   color: var(--sidebar-text);
