@@ -1,7 +1,7 @@
 import "./AgentsPage.css";
 import CreateAgent from "./CreateAgent/CreateAgent.jsx";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 const sampleAgents = [
   {
@@ -32,24 +32,20 @@ function AgentsPage(){
     const [isCreating, setIsCreating] = useState(false);
     const [agents, setAgents] = useState(sampleAgents);
     const [openMenuId, setOpenMenuId] = useState(null);
-    const menuRef = useRef(null);
 
     useEffect(() => {
         function handleClickOutside(event) {
-            if (
-                menuRef.current &&
-                !menuRef.current.contains(event.target)
-            ) {
+            if (!event.target.closest(".agent-menu-container")) {
                 setOpenMenuId(null);
             }
         }
-
+        
         document.addEventListener("mousedown", handleClickOutside);
 
-            return () => {
-                document.removeEventListener("mousedown", handleClickOutside);
-            };
-        }, []);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     console.log(isCreating);
 
@@ -86,42 +82,50 @@ function AgentsPage(){
 
             <div className="agents-list">
                 {agents.map((agent) => (
-                    <div key={agent.id} className="agent-card" ref={menuRef}>
+                    <div key={agent.id} className="agent-card">
                     <div className="agent-card-header">
                         <div>
                         <h3>{agent.name}</h3>
                         <span>{agent.type}</span>
                         </div>
 
-                        <div className="agent-card-actions">
+                       <div className="agent-card-actions">
                             <span className={`agent-status ${agent.status.toLowerCase()}`}>
                                 {agent.status}
                             </span>
 
-                            <button
+                            <div className="agent-menu-container">
+                                <button
                                 className="agent-menu-btn"
                                 type="button"
                                 onClick={() =>
                                     setOpenMenuId(openMenuId === agent.id ? null : agent.id)
-                                }>
-                                    ⋮
-                            </button>
+                                }
+                                >
+                                ⋮
+                                </button>
 
+                                {openMenuId === agent.id && (
+                                <div className="agent-dropdown">
+                                    <ul className="agent-menu">
+                                    <li><button type="button">Edit Agent</button></li>
+                                    <li><button type="button">Duplicate Agent</button></li>
+                                    <li>
+                                        <button type="button">
+                                        {agent.status === "Active" ? "Pause Agent" : "Activate Agent"}
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" className="delete-action">
+                                        Delete Agent
+                                        </button>
+                                    </li>
+                                    </ul>
+                                </div>
+                                )}
+                            </div>
                         </div>
                     </div>
-
-                    {openMenuId === agent.id && (
-                        <div className="agent-dropdown">
-                            <button type="button">Edit Agent</button>
-                            <button type="button">Duplicate Agent</button>
-                            <button type="button">
-                                {agent.status === "Active" ? "Pause Agent" : "Activate Agent"}
-                            </button>
-                            <button type="button" className="delete-action">
-                                Delete Agent
-                            </button>
-                        </div>
-                    )}
 
                     <p>{agent.description}</p>
                     </div>
