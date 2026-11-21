@@ -32,6 +32,23 @@ function AgentsPage(){
     const [isCreating, setIsCreating] = useState(false);
     const [agents, setAgents] = useState(sampleAgents);
     const [openMenuId, setOpenMenuId] = useState(null);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [statusFilter, setStatusFilter] = useState("all");
+
+    const filteredAgents = agents.filter((agent) => {
+        const query = searchQuery.toLowerCase().trim();
+
+        const matchesSearch =
+            agent.name.toLowerCase().includes(query) ||
+            agent.description.toLowerCase().includes(query) ||
+            agent.type.toLowerCase().includes(query);
+
+        const matchesStatus =
+            statusFilter === "all" ||
+            agent.status.toLowerCase() === statusFilter;
+
+        return matchesSearch && matchesStatus;
+    });
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -70,9 +87,15 @@ function AgentsPage(){
                     type="text"
                     placeholder="Search AI agents..."
                     className="agents-search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                 />
 
-                <select className="agents-filter">
+                <select 
+                className="agents-filter"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                >
                     <option value="all">All Agents</option>
                     <option value="active">Active</option>
                     <option value="draft">Draft</option>
@@ -81,7 +104,8 @@ function AgentsPage(){
             </div>
 
             <div className="agents-list">
-                {agents.map((agent) => (
+                {filteredAgents.length > 0 ? (
+                filteredAgents.map((agent) => (
                     <div key={agent.id} className="agent-card">
                     <div className="agent-card-header">
                         <div>
@@ -110,11 +134,30 @@ function AgentsPage(){
                                     <ul className="agent-menu">
                                     <li><button type="button">Edit Agent</button></li>
                                     <li><button type="button">Duplicate Agent</button></li>
-                                    <li>
-                                        <button type="button">
-                                        {agent.status === "Active" ? "Pause Agent" : "Activate Agent"}
-                                        </button>
-                                    </li>
+                                    {agent.status !== "Draft" && (
+                                        <li>
+                                            <button
+                                            type="button"
+                                            onClick={() => {
+                                                setAgents((prevAgents) =>
+                                                prevAgents.map((item) =>
+                                                    item.id === agent.id
+                                                    ? {
+                                                        ...item,
+                                                        status: item.status === "Active" ? "Paused" : "Active"
+                                                        }
+                                                    : item
+                                                )
+                                                );
+
+                                                setOpenMenuId(null);
+                                            }}>
+
+                                            {agent.status === "Active" ? "Pause Agent" : "Activate Agent"}
+                                            </button>
+                                        </li>
+                                    )}
+
                                     <li>
                                         <button type="button" className="delete-action">
                                         Delete Agent
@@ -129,7 +172,10 @@ function AgentsPage(){
 
                     <p>{agent.description}</p>
                     </div>
-                ))}
+                ))
+                ) : (
+                <p className="no-agents-message">No agents found.</p>
+                )}
             </div>
 
                 

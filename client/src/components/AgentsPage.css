@@ -87,6 +87,7 @@
   cursor: pointer;
 }
 
+
 /* =========================
    AGENT CARDS
 ========================= */
@@ -94,41 +95,48 @@
 .agents-list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 20px;
 }
 
 .agent-card {
-  min-height: 120px;
-  padding: 22px 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 105px;
+  padding: 18px 24px;
+  background: var(--surface);
+  border: 1px solid #EAE6F2;
+  border-radius: 14px;
+  transition: box-shadow 0.2s ease;
 }
 
+
 .agent-card:hover {
-  transform: translateY(-3px);
   box-shadow: 0 8px 24px rgba(35, 25, 60, 0.07);
 }
 
+/* Top Row */
+
 .agent-card-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
+  width: 100%;
   min-width: 0;
 }
 
 .agent-card-header > div:first-child {
   flex: 1;
   min-width: 0;
-  max-width: 180px;
 }
 
-
 .agent-card-header h3 {
-  margin-bottom: 7px;
+  margin-bottom: 6px;
   color: var(--text-primary);
   font-size: 15px;
   line-height: 1.4;
   font-weight: 600;
-  overflow-wrap: break-word;
 }
 
 .agent-card-header div > span {
@@ -136,86 +144,41 @@
   font-size: 12px;
 }
 
+/* Description - Center */
+
 .agent-card > p {
+  position: absolute;
+  top: 50%;
+  left: 24px;
+  right: 24px;
+  margin: 0;
+  transform: translateY(-50%);
   color: var(--text-secondary);
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.5;
+  text-align: center;
 }
 
-/* =========================
-   STATUS BADGES
-========================= */
+/* Status and Menu */
 
 .agent-card-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
-.agent-status {
-  flex-shrink: 0;
-  padding: 5px 8px;
-  border-radius: 20px;
-  font-size: 10px;
-  font-weight: 600;
-  white-space: nowrap;
-}
 
-.agent-status.active {
-  background: #E8F8EF;
-  color: #16834A;
-}
-
-.agent-status.draft {
-  background: #FFF5DF;
-  color: #A66A00;
-}
-
-.agent-status.paused {
-  background: #F0EDF5;
-  color: #756B85;
-}
-
-/* =========================
-   THREE DOT MENU
-========================= */
-
-.agent-menu-container {
-  position: relative;
-  display: flex;
-  flex-shrink: 0;
-}
-
-.agent-menu-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  border: 1px solid #E5E0EF;
-  border-radius: 8px;
-  background: #FFFFFF;
-  color: var(--primary);
-  font-size: 19px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.agent-menu-btn:hover {
-  border-color: var(--primary);
-  background: #F6F1FF;
-}
 /* =========================
    DROPDOWN MENU
 ========================= */
 
 .agent-dropdown {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 4px);
   right: 0;
-  z-index: 50;
+  left: auto;
+  z-index: 1000;
   width: 180px;
   padding: 6px;
   background: #FFFFFF;
@@ -228,6 +191,13 @@
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.agent-menu-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .agent-dropdown button {
@@ -255,6 +225,42 @@
 
 .agent-dropdown button.delete-action:hover {
   background: #FEF2F2;
+}
+
+/* =========================
+   STATUS BADGES
+========================= */
+
+.agent-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 11px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Active - Green */
+.agent-status.active {
+  background: #E6F8EF;
+  color: #15803D;
+  border: 1px solid #B9EBCF;
+}
+
+/* Draft - Amber */
+.agent-status.draft {
+  background: #FFF5DF;
+  color: #B7791F;
+  border: 1px solid #F5D99B;
+}
+
+/* Paused - Red */
+.agent-status.paused {
+  background: #FDECEC;
+  color: #DC2626;
+  border: 1px solid #F5C2C2;
 }
 
 /* =========================
