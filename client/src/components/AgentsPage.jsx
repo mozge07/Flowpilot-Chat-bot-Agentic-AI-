@@ -34,6 +34,8 @@ function AgentsPage(){
     const [openMenuId, setOpenMenuId] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
+    const [isEditing, setIsEditing] = useState(false);
+    const [selectedAgent, setSelectedAgent] = useState(null);
 
     const duplicateAgent = (agent) => {
         const newAgent = {
@@ -43,7 +45,14 @@ function AgentsPage(){
             status: "Draft"
         };
 
-        setAgents((prevAgents) => [...prevAgents, newAgent]);};    
+        setAgents((prevAgents) => [...prevAgents, newAgent]);
+    };    
+
+    const handleEditAgent = (agent) => {
+        setSelectedAgent(agent);
+        setIsEditing(true);
+        setOpenMenuId(null);
+    }
 
     const filteredAgents = agents.filter((agent) => {
         const query = searchQuery.toLowerCase().trim();
@@ -80,6 +89,7 @@ function AgentsPage(){
         return <CreateAgent />;
     }
 
+
     return (
         <section className="agents-page">
             <header className="agents-header">
@@ -113,17 +123,70 @@ function AgentsPage(){
                 </select>
             </div>
 
-            <div className="agents-list">
-                {filteredAgents.length > 0 ? (
-                filteredAgents.map((agent) => (
-                    <div key={agent.id} className="agent-card">
-                    <div className="agent-card-header">
-                        <div>
-                        <h3>{agent.name}</h3>
-                        <span>{agent.type}</span>
-                        </div>
+           {isEditing && selectedAgent ? (
+                <div className="edit-agent-container">
+                    <h2>Edit Agent</h2>
 
-                       <div className="agent-card-actions">
+                    <div className="edit-agent-form">
+                    <div className="form-group">
+                        <label>Agent Name</label>
+                        <input
+                        type="text"
+                        value={selectedAgent.name}
+                        onChange={(e) =>
+                            setSelectedAgent({
+                            ...selectedAgent,
+                            name: e.target.value
+                            })
+                        }
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Agent Description</label>
+                        <textarea
+                        value={selectedAgent.description}
+                        onChange={(e) =>
+                            setSelectedAgent({
+                            ...selectedAgent,
+                            description: e.target.value
+                            })
+                        }
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Agent Type</label>
+
+                        <select
+                            value={selectedAgent.type}
+                            onChange={(e) => 
+                                setSelectedAgent({
+                                    ...selectedAgent,
+                                    type: e.target.value
+                                })
+                            }
+                        >
+                            <option value="Customer Support">Customer Support</option>
+                            <option value="Sales">Sales</option>
+                            <option value="FAQ">FAQ</option>
+                        </select>
+                    </div>
+
+                    </div>
+                </div>
+                ) : (
+                <div className="agents-list">
+                    {filteredAgents.length > 0 ? (
+                    filteredAgents.map((agent) => (
+                        <div key={agent.id} className="agent-card">
+                        <div className="agent-card-header">
+                            <div>
+                            <h3>{agent.name}</h3>
+                            <span>{agent.type}</span>
+                            </div>
+
+                            <div className="agent-card-actions">
                             <span className={`agent-status ${agent.status.toLowerCase()}`}>
                                 {agent.status}
                             </span>
@@ -132,8 +195,10 @@ function AgentsPage(){
                                 <button
                                 className="agent-menu-btn"
                                 type="button"
-                                onClick={() => 
-                                    setOpenMenuId(openMenuId === agent.id ? null : agent.id)
+                                onClick={() =>
+                                    setOpenMenuId(
+                                    openMenuId === agent.id ? null : agent.id
+                                    )
                                 }
                                 >
                                 ⋮
@@ -142,55 +207,71 @@ function AgentsPage(){
                                 {openMenuId === agent.id && (
                                 <div className="agent-dropdown">
                                     <ul className="agent-menu">
-                                    <li><button type="button">Edit Agent</button></li>
                                     <li>
-                                        <button 
-                                            type="button"
-                                            onClick={() => {
-                                                duplicateAgent(agent);
-                                                setOpenMenuId(null);
-                                            }}
+                                        <button
+                                        type="button"
+                                        onClick={() => handleEditAgent(agent)}
                                         >
-                                            Duplicate Agent
+                                        Edit Agent
+                                        </button>
+                                    </li>
+
+                                    <li>
+                                        <button
+                                        type="button"
+                                        onClick={() => {
+                                            duplicateAgent(agent);
+                                            setOpenMenuId(null);
+                                        }}
+                                        >
+                                        Duplicate Agent
                                         </button>
                                     </li>
 
                                     {agent.status !== "Draft" && (
                                         <li>
-                                            <button
+                                        <button
                                             type="button"
                                             onClick={() => {
-                                                setAgents((prevAgents) =>
+                                            setAgents((prevAgents) =>
                                                 prevAgents.map((item) =>
-                                                    item.id === agent.id
+                                                item.id === agent.id
                                                     ? {
                                                         ...item,
-                                                        status: item.status === "Active" ? "Paused" : "Active"
-                                                        }
+                                                        status:
+                                                        item.status === "Active"
+                                                            ? "Paused"
+                                                            : "Active"
+                                                    }
                                                     : item
                                                 )
-                                                );
+                                            );
 
-                                                setOpenMenuId(null);
-                                            }}>
-
-                                            {agent.status === "Active" ? "Pause Agent" : "Activate Agent"}
-                                            </button>
+                                            setOpenMenuId(null);
+                                            }}
+                                        >
+                                            {agent.status === "Active"
+                                            ? "Pause Agent"
+                                            : "Activate Agent"}
+                                        </button>
                                         </li>
                                     )}
 
                                     <li>
-                                        <button 
-                                        type="button" 
+                                        <button
+                                        type="button"
                                         className="delete-action"
                                         onClick={() => {
                                             const confirmed = window.confirm(
-                                                "Are you sure you want to delete this agent?"
+                                            "Are you sure you want to delete this agent?"
                                             );
+
                                             if (confirmed) {
-                                                setAgents((prevAgents) =>
-                                                    prevAgents.filter((item) => item.id !== agent.id)
-                                                );
+                                            setAgents((prevAgents) =>
+                                                prevAgents.filter(
+                                                (item) => item.id !== agent.id
+                                                )
+                                            );
                                             }
 
                                             setOpenMenuId(null);
@@ -203,17 +284,17 @@ function AgentsPage(){
                                 </div>
                                 )}
                             </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <p>{agent.description}</p>
-                    </div>
-                ))
-                ) : (
-                <p className="no-agents-message">No agents found.</p>
+                        <p>{agent.description}</p>
+                        </div>
+                    ))
+                    ) : (
+                    <p className="no-agents-message">No agents found.</p>
+                    )}
+                </div>
                 )}
-            </div>
-
                 
 
         </section>
