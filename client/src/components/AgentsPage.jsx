@@ -35,6 +35,16 @@ function AgentsPage(){
     const [searchQuery, setSearchQuery] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
 
+    const duplicateAgent = (agent) => {
+        const newAgent = {
+            ...agent,
+            id: crypto.randomUUID(),
+            name: `${agent.name} (Copy)`,
+            status: "Draft"
+        };
+
+        setAgents((prevAgents) => [...prevAgents, newAgent]);};    
+
     const filteredAgents = agents.filter((agent) => {
         const query = searchQuery.toLowerCase().trim();
 
@@ -122,7 +132,7 @@ function AgentsPage(){
                                 <button
                                 className="agent-menu-btn"
                                 type="button"
-                                onClick={() =>
+                                onClick={() => 
                                     setOpenMenuId(openMenuId === agent.id ? null : agent.id)
                                 }
                                 >
@@ -133,7 +143,18 @@ function AgentsPage(){
                                 <div className="agent-dropdown">
                                     <ul className="agent-menu">
                                     <li><button type="button">Edit Agent</button></li>
-                                    <li><button type="button">Duplicate Agent</button></li>
+                                    <li>
+                                        <button 
+                                            type="button"
+                                            onClick={() => {
+                                                duplicateAgent(agent);
+                                                setOpenMenuId(null);
+                                            }}
+                                        >
+                                            Duplicate Agent
+                                        </button>
+                                    </li>
+
                                     {agent.status !== "Draft" && (
                                         <li>
                                             <button
@@ -159,7 +180,22 @@ function AgentsPage(){
                                     )}
 
                                     <li>
-                                        <button type="button" className="delete-action">
+                                        <button 
+                                        type="button" 
+                                        className="delete-action"
+                                        onClick={() => {
+                                            const confirmed = window.confirm(
+                                                "Are you sure you want to delete this agent?"
+                                            );
+                                            if (confirmed) {
+                                                setAgents((prevAgents) =>
+                                                    prevAgents.filter((item) => item.id !== agent.id)
+                                                );
+                                            }
+
+                                            setOpenMenuId(null);
+                                        }}
+                                        >
                                         Delete Agent
                                         </button>
                                     </li>
