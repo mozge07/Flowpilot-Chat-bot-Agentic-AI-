@@ -54,6 +54,24 @@ function AgentsPage(){
         setOpenMenuId(null);
     }
 
+    const handleSaveChanges = () => {
+        setAgents((prevAgents) => 
+            prevAgents.map((item) => 
+                item.id === selectedAgent.id
+                    ? selectedAgent
+                    : item
+            )
+        );
+
+        setIsEditing(false);
+        setSelectedAgent(null);
+    }
+
+    const handleCancelEdit =() => {
+        setIsEditing(false);
+        setSelectedAgent(null);
+    }
+
     const filteredAgents = agents.filter((agent) => {
         const query = searchQuery.toLowerCase().trim();
 
@@ -98,11 +116,17 @@ function AgentsPage(){
                     <p>Manage your AI Support agents.</p>
                 </div>
 
-                <button onClick={() => setIsCreating(true)}>
-                    + Create New Agent
-                </button>
+                {!isEditing && (
+                    <button 
+                        className="create-agent-btn"
+                        onClick={() => setIsCreating(true)}>
+                            + Create New Agent
+                    </button>
+                )}
             </header>
-            <div className="agents-toolbar">
+
+            {!isEditing && (
+                <div className="agents-toolbar">
                 <input
                     type="text"
                     placeholder="Search AI agents..."
@@ -121,7 +145,8 @@ function AgentsPage(){
                     <option value="draft">Draft</option>
                     <option value="paused">Paused</option>
                 </select>
-            </div>
+                </div>
+            )}
 
            {isEditing && selectedAgent ? (
                 <div className="edit-agent-container">
@@ -172,8 +197,27 @@ function AgentsPage(){
                             <option value="FAQ">FAQ</option>
                         </select>
                     </div>
-
                     </div>
+
+                    <div className="edit-agent-actions">
+                        <button
+                            type="button"
+                            className="cancel-agent-btn"
+                            onClick={handleCancelEdit}
+                        >
+                            Cancel
+                        </button>
+                        
+                        <button
+                            type="button"
+                            className="save-agent-btn"
+                            onClick={handleSaveChanges}
+                        >
+                            Save Changes
+                        </button>
+
+                    </div>   
+                         
                 </div>
                 ) : (
                 <div className="agents-list">

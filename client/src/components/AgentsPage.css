@@ -1,300 +1,389 @@
 
-/* =========================
-   AI AGENTS PAGE
-========================= */
+  /* =========================
+    AI AGENTS PAGE
+  ========================= */
 
-.agents-page {
-  width: 100%;
-  min-height: 100vh;
-  padding: 40px;
-  background: var(--workspace-bg);
-}
-
-/* Page Header */
-
-.agents-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 32px;
-}
-
-.agents-header h1 {
-  margin-bottom: 8px;
-  color: var(--text-primary);
-  font-size: 28px;
-}
-
-.agents-header p {
-  color: var(--text-secondary);
-  font-size: 14px;
-}
-
-.agents-header button {
-  padding: 13px 20px;
-  border: none;
-  border-radius: 9px;
-  background: var(--primary);
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.agents-header button:hover {
-  background: var(--primary-hover);
-}
-
-/* =========================
-   SEARCH AND FILTER
-========================= */
-
-.agents-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 24px;
-}
-
-.agents-search {
-  flex: 1;
-  min-width: 0;
-  padding: 13px 15px;
-  border: 1px solid #E5E0EF;
-  border-radius: 9px;
-  outline: none;
-  background: white;
-  color: var(--text-primary);
-  font-size: 14px;
-}
-
-.agents-search:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(117, 70, 219, 0.1);
-}
-
-.agents-filter {
-  min-width: 150px;
-  padding: 13px;
-  border: 1px solid #E5E0EF;
-  border-radius: 9px;
-  outline: none;
-  background: white;
-  color: var(--text-primary);
-  font-size: 14px;
-  cursor: pointer;
-}
-
-
-/* =========================
-   AGENT CARDS
-========================= */
-
-.agents-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
-
-.agent-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 105px;
-  padding: 18px 24px;
-  background: var(--surface);
-  border: 1px solid #EAE6F2;
-  border-radius: 14px;
-  transition: box-shadow 0.2s ease;
-}
-
-
-.agent-card:hover {
-  box-shadow: 0 8px 24px rgba(35, 25, 60, 0.07);
-}
-
-/* Top Row */
-
-.agent-card-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  width: 100%;
-  min-width: 0;
-}
-
-.agent-card-header > div:first-child {
-  flex: 1;
-  min-width: 0;
-}
-
-.agent-card-header h3 {
-  margin-bottom: 6px;
-  color: var(--text-primary);
-  font-size: 15px;
-  line-height: 1.4;
-  font-weight: 600;
-}
-
-.agent-card-header div > span {
-  color: var(--text-secondary);
-  font-size: 12px;
-}
-
-/* Description - Center */
-
-.agent-card > p {
-  position: absolute;
-  top: 50%;
-  left: 24px;
-  right: 24px;
-  margin: 0;
-  transform: translateY(-50%);
-  color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.5;
-  text-align: center;
-}
-
-/* Status and Menu */
-
-.agent-card-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-
-/* =========================
-   DROPDOWN MENU
-========================= */
-
-.agent-dropdown {
-  position: absolute;
-  top: calc(100% + 4px);
-  right: 0;
-  left: auto;
-  z-index: 1000;
-  width: 180px;
-  padding: 6px;
-  background: #FFFFFF;
-  border: 1px solid #EAE6F2;
-  border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(35, 25, 60, 0.12);
-}
-
-.agent-menu {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.agent-menu-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.agent-dropdown button {
-  display: block;
-  width: 100%;
-  padding: 10px 12px;
-  border: none;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--text-primary);
-  font-size: 13px;
-  text-align: left;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.agent-dropdown button:hover {
-  background: #F6F1FF;
-  color: var(--primary);
-}
-
-.agent-dropdown button.delete-action {
-  color: #DC2626;
-}
-
-.agent-dropdown button.delete-action:hover {
-  background: #FEF2F2;
-}
-
-/* =========================
-   STATUS BADGES
-========================= */
-
-.agent-status {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 11px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-/* Active - Green */
-.agent-status.active {
-  background: #E6F8EF;
-  color: #15803D;
-  border: 1px solid #B9EBCF;
-}
-
-/* Draft - Amber */
-.agent-status.draft {
-  background: #FFF5DF;
-  color: #B7791F;
-  border: 1px solid #F5D99B;
-}
-
-/* Paused - Red */
-.agent-status.paused {
-  background: #FDECEC;
-  color: #DC2626;
-  border: 1px solid #F5C2C2;
-}
-
-/* =========================
-   RESPONSIVE DESIGN
-========================= */
-
-@media (max-width: 900px) {
-  .agents-list {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  }
-}
-
-@media (max-width: 600px) {
   .agents-page {
-    padding: 22px 16px;
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px;
+    background: var(--workspace-bg);
   }
+
+  /* Page Header */
 
   .agents-header {
-    align-items: flex-start;
-    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 32px;
   }
 
+  .agents-header h1 {
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-size: 28px;
+  }
+
+  .agents-header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
+
+  .agents-header button {
+    padding: 13px 20px;
+    border: none;
+    border-radius: 9px;
+    background: var(--primary);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .agents-header button:hover {
+    background: var(--primary-hover);
+  }
+
+  /* =========================
+    SEARCH AND FILTER
+  ========================= */
+
   .agents-toolbar {
-    align-items: stretch;
-    flex-direction: column;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .agents-search {
+    flex: 1;
+    min-width: 0;
+    padding: 13px 15px;
+    border: 1px solid #E5E0EF;
+    border-radius: 9px;
+    outline: none;
+    background: white;
+    color: var(--text-primary);
+    font-size: 14px;
+  }
+
+  .agents-search:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(117, 70, 219, 0.1);
   }
 
   .agents-filter {
-    width: 100%;
+    min-width: 150px;
+    padding: 13px;
+    border: 1px solid #E5E0EF;
+    border-radius: 9px;
+    outline: none;
+    background: white;
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
   }
+
+
+  /* =========================
+    AGENT CARDS
+  ========================= */
 
   .agents-list {
+    display: grid;
     grid-template-columns: 1fr;
+    gap: 20px;
   }
-}
+
+  .agent-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 105px;
+    padding: 18px 24px;
+    background: var(--surface);
+    border: 1px solid #EAE6F2;
+    border-radius: 14px;
+    transition: box-shadow 0.2s ease;
+  }
 
 
+  .agent-card:hover {
+    box-shadow: 0 8px 24px rgba(35, 25, 60, 0.07);
+  }
+
+  /* Top Row */
+
+  .agent-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .agent-card-header > div:first-child {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .agent-card-header h3 {
+    margin-bottom: 6px;
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  .agent-card-header div > span {
+    color: var(--text-secondary);
+    font-size: 12px;
+  }
+
+  /* Description - Center */
+
+  .agent-card > p {
+    position: absolute;
+    top: 50%;
+    left: 24px;
+    right: 24px;
+    margin: 0;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  /* Status and Menu */
+
+  .agent-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+
+  /* =========================
+    DROPDOWN MENU
+  ========================= */
+
+  .agent-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    left: auto;
+    z-index: 1000;
+    width: 180px;
+    padding: 6px;
+    background: #FFFFFF;
+    border: 1px solid #EAE6F2;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(35, 25, 60, 0.12);
+  }
+
+  .agent-menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .agent-menu-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .agent-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .agent-dropdown button:hover {
+    background: #F6F1FF;
+    color: var(--primary);
+  }
+
+  .agent-dropdown button.delete-action {
+    color: #DC2626;
+  }
+
+  .agent-dropdown button.delete-action:hover {
+    background: #FEF2F2;
+  }
+
+  /* =========================
+    STATUS BADGES
+  ========================= */
+
+  .agent-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Active - Green */
+  .agent-status.active {
+    background: #E6F8EF;
+    color: #15803D;
+    border: 1px solid #B9EBCF;
+  }
+
+  /* Draft - Amber */
+  .agent-status.draft {
+    background: #FFF5DF;
+    color: #B7791F;
+    border: 1px solid #F5D99B;
+  }
+
+  /* Paused - Red */
+  .agent-status.paused {
+    background: #FDECEC;
+    color: #DC2626;
+    border: 1px solid #F5C2C2;
+  }
+
+  /* =========================
+    RESPONSIVE DESIGN
+  ========================= */
+
+  @media (max-width: 900px) {
+    .agents-list {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+  }
+
+  @media (max-width: 600px) {
+    .agents-page {
+      padding: 22px 16px;
+    }
+
+    .agents-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .agents-toolbar {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .agents-filter {
+      width: 100%;
+    }
+
+    .agents-list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .edit-agent-container {
+    margin-top: 28px;
+    padding: 30px;
+    background: var(--surface);
+    border: 1px solid #EAE6F2;
+    border-radius: 14px;
+    max-width: 900px;
+  }
+
+  .edit-agent-container h2 {
+    margin: 0 0 28px;
+    font-size: 24px;
+  }
+
+  .edit-agent-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 750px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #DED8EA;
+    border-radius: 9px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  .form-group textarea {
+    min-height: 130px;
+    resize: vertical;
+  }
+
+  /* Edit Agent Action Buttons */
+  .edit-agent-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    max-width: 750px;
+    margin-top: 24px;
+  }
+
+  .cancel-agent-btn,
+  .save-agent-btn {
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .cancel-agent-btn {
+    background: white;
+    color: #51456B;
+    border: 1px solid #DED8EA;
+  }
+
+  .cancel-agent-btn:hover {
+    background: #F5F2FA;
+    border-color: #C9BCE5;
+  }
+
+  .save-agent-btn {
+    background: #7546DB;
+    color: white;
+    border: 1px solid #7546DB;
+  }
+
+  .save-agent-btn:hover {
+    background: #6335C5;
+    border-color: #6335C5;
+    box-shadow: 0 3px 10px rgba(117, 70, 219, 0.2);
+  }
