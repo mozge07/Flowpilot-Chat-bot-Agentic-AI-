@@ -9,6 +9,7 @@ import aiRouter from "./routes/ai.routes.js";
 import faqRouter from "./routes/faq.routes.js";
 import conversationRouter from "./routes/conversation.routes.js";
 import messageRouter from "./routes/message.routes.js";
+import agentRouter from "./routes/agent.routes.js";
 import connectDB from "./config/db.js";
 
 // Optional DNS configuration for systems with DNS resolution issues
@@ -31,6 +32,7 @@ app.use("/api/ai", aiRouter);
 app.use("/api/faqs", faqRouter);
 app.use("/api/conversations", conversationRouter);
 app.use("/api/messages", messageRouter);
+app.use("/api/agents", agentRouter);
 
 // Health check
 app.get("/api/health", (req, res) => {
