@@ -315,6 +315,49 @@ export const updateAgentController = async (req, res) => {
             }
         }
 
+        const allowedAvatars = ["🤖", "💬", "🎧", "✨"];
+
+        const allowedColors = [
+            "#7546DB",
+            "#16A34A",
+            "#2563EB",
+            "#DB2777",
+            "#EA580C"
+        ];
+
+        const allowedPositions = ["bottom-right", "bottom-left"];
+
+        if (
+            updateData.avatar !== undefined &&
+            updateData.avatar !== "" &&
+            !allowedAvatars.includes(updateData.avatar)
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid avatar selection"
+            });
+        }
+
+        if (
+            updateData.primaryColor !== undefined &&
+            !allowedColors.includes(updateData.primaryColor)
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid primary color"
+            });
+        }
+
+        if (
+            updateData.widgetPosition !== undefined &&
+            !allowedPositions.includes(updateData.widgetPosition)
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid widget position"
+            });
+        }
+
     } catch(error) {
 
     }
