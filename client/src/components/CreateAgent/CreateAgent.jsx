@@ -35,6 +35,7 @@ const sampleDocuments = [
 function CreateAgent() {
 
     const [currentStep, setCurrentStep] = useState(1);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         agentName: "",
         description: "",
@@ -48,6 +49,45 @@ function CreateAgent() {
         welcomeMessage: "Hi! How can I help you today?",
         widgetPosition: "bottom-right"
     });
+
+    const handleCreateAgent = async () => {
+        try {
+            setIsSubmitting(true);
+
+            const response = await fetch("http://localhost:5000/api/agents", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: formData.agentName,
+                    description: formData.description,
+                    type: formData.agentType,
+                    agentRole: formData.agentRole,
+                    instructions: formData.instructions,
+                    selectedFaqs: formData.selectedFaqs,
+                    selectedDocuments: formData.selectedDocuments,
+                    avatar: formData.avatar,
+                    primaryColor: formData.primaryColor,
+                    welcomeMessage: formData.welcomeMessage,
+                    widgetPosition: formData.widgetPosition
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Failed to Create Agent");
+            }
+
+            alert("Agent Created Successfully!");
+
+        } catch(error) {
+            console.error("Create Agent Error:", error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
 
   return (
     <section className="create-agent-page">
@@ -460,10 +500,19 @@ function CreateAgent() {
                         }
 
 
-                        setCurrentStep(prev => Math.min(prev + 1, 5));
+                        if (currentStep === 5) {
+                            handleCreateAgent();    
+                        } else {
+                            setCurrentStep(prev => prev + 1);
+                        }
                     }}
+
+                disabled={isSubmitting}
                 >
-                    {currentStep === 5 ? "Create Agent" : "Continue →"}
+                    {currentStep === 5 
+                    ? (isSubmitting ? "Creating..." : "Create Agent")
+                    : "Continue ->"
+                    }
                 </button>
             </div>
       </div>

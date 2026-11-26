@@ -410,7 +410,7 @@ export const updateAgentController = async (req, res) => {
             agentId,
             {$set: updateData}  ,
             {
-                new: true,
+                returnDocument: "after",
                 runValidators: true
             }
         );
