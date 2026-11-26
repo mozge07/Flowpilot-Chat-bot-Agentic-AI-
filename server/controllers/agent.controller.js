@@ -261,11 +261,11 @@ export const updateAgentController = async (req, res) => {
             
         ];
 
-        const inValidFields = Object.keys(updateData).filter(
+        const invalidFields = Object.keys(updateData).filter(
             (field) => !allowedFields.includes(field)
         );
 
-        if (inValidFields.length > 0) {
+        if (invalidFields.length > 0) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid update fields"
@@ -282,16 +282,6 @@ export const updateAgentController = async (req, res) => {
             });
         }
 
-        if (
-            updateData.type !== undefined &&
-            !["support", "sales", "faq"].includes(updateData.type)
-        ) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid agent type"
-            });
-        }
-
         const stringFields = [
             "name",
             "description",
@@ -303,6 +293,13 @@ export const updateAgentController = async (req, res) => {
             "widgetPosition"
         ];
 
+        const requiredTextFields = [
+            "name",
+            "description",
+            "agentRole",
+            "instructions"
+        ]
+
         for (const field of stringFields) {
             if (
                 updateData[field] !== undefined &&
@@ -311,6 +308,18 @@ export const updateAgentController = async (req, res) => {
                 return res.status(400).json({
                     success: false,
                     message: `${field} must be a string`
+                });
+            }
+        }
+
+        for (const field of requiredTextFields) {
+            if (
+                updateData[field] !== undefined &&
+                !updateData[field].trim()
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message: `${field} cannot be empty`
                 });
             }
         }
@@ -358,7 +367,106 @@ export const updateAgentController = async (req, res) => {
             });
         }
 
-    } catch(error) {
+        if (
+            updateData.selectedFaqs !== undefined &&
+            (
+                !Array.isArray(updateData.selectedFaqs) ||
+                updateData.selectedFaqs.some(
+                    (id) => typeof id !== "string" || !id.trim()
+                )
+            )
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid FAQ selection"
+            });
+        }
 
+        if (
+            updateData.selectedDocuments !== undefined && 
+            (
+                !Array.isArray(updateData.selectedDocuments) ||
+                updateData.selectedDocuments.some(
+                    (id) =>     typeof id !== "string" || !id.trim()
+                )
+            )
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid document selection"
+            });
+        }
+
+        const existingAgent = await Agent.findById(agentId);
+
+        if (!existingAgent) {
+            return res.status(404).json({
+            success: false,
+            message: "Agent not found"
+            });
+        }
+
+        const updatedAgent = await Agent.findByIdAndUpdate(
+            agentId,
+            {$set: updateData}  ,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        return res.status(200).json({
+            success:true,
+            message: "Agent updated successfully",
+            agent: updatedAgent
+        })
+
+    } catch(error) {
+        console.error("Update Agent Error:", error.message);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to update agent"
+        });
     }
-}
+};
+
+// Use: to delete agent 
+// Method: DELETE
+// /api/agents/:agentId
+export const deleteAgentController = async (req, res) => {
+    try{
+        const { agentId } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(agentId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Agent ID"
+            });
+        }
+
+        const existingAgent = await Agent.findById(agentId);
+
+        if (!existingAgent) {
+            return res.status(404).json({
+                success: false,
+                message: "Agent not found"
+            });
+        }
+
+        await Agent.findByIdAndDelete(agentId);
+
+        return res.status(200).json({
+            success: true,
+            message: "Agent deleted successfully"
+        });
+
+    } catch(error) {
+        console.error("Delete Agent Error:", error.message);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to delete agent"
+        });
+    }
+};
