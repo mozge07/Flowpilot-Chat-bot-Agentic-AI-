@@ -1,0 +1,96 @@
+
+.knowledge-base-page {
+    padding: 32px;
+    min-height: 100%;
+    background: #F7F5FC;
+    color: #211936;
+}
+
+.knowledge-base-page h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.knowledge-base-page > p {
+    color: #777085;
+    margin-bottom: 24px;
+}
+
+.knowledge-base-tabs {
+    display: flex;
+    gap: 10px;
+    border-bottom: 1px solid #E5E0EF;
+    margin-bottom: 24px;
+}
+
+.knowledge-base-tabs button {
+    padding: 12px 20px;
+    border: none;
+    background: transparent;
+    color: #777085;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.knowledge-base-tabs button:hover {
+    color: #7546DB;
+}
+
+
+.knowledge-base-tabs button.active {
+    color: #7546DB;
+    border-bottom: 2px solid #7546DB;
+}
+
+.knowledge-base-page > button {
+    background: #7546DB;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 18px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.knowledge-base-page > button:hover {
+    background: #6235C5;
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.faq-card {
+    background: #FFFFFF;
+    border: 1px solid #E9E4F1;
+    border-radius: 12px;
+    padding: 18px 20px;
+}
+
+.faq-card h3 {
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: #211936;
+}
+
+.faq-card p {
+    font-size: 14px;
+    color: #777085;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.faq-card span {
+    display: inline-block;
+    background: #F0EAFB;
+    color: #7546DB;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}

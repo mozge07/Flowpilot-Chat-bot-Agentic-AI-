@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-//import "./knowledgeBase.css";
+import "./KnowledgeBase.css";
 
-function knowledgeBase() {
+function KnowledgeBase() {
     const [faqs, setFaqs] = useState([]);
     const [documents, setDocuments] = useState([]);
     const [activeTab, setActiveTab] = useState("faqs");
@@ -46,7 +46,7 @@ function knowledgeBase() {
                 body: JSON.stringify(faqForm)
             });
 
-            const data = response.json();
+            const data = await response.json();
 
             if (!response.ok) {
                 throw new Error(data.message || "Failed to Create FAQ");
@@ -77,12 +77,14 @@ function knowledgeBase() {
 
             <div className="knowledge-base-tab">
                 <button 
+                    className={activeTab === "faqs" ? "active" : ""}
                     onClick={() => setActiveTab("faqs")}
                 >
                     FAQs
                 </button>
 
                 <button 
+                    className={activeTab === "documents" ? "active" : ""}
                     onClick={() => setActiveTab("documents")}
                 >
                     Documents
@@ -171,4 +173,4 @@ function knowledgeBase() {
 
 }
 
-export default knowledgeBase;
+export default KnowledgeBase;
