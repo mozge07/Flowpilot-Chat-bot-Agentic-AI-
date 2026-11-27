@@ -37,6 +37,16 @@ function KnowledgeBase() {
     }, []);
 
     const handleAddFaq = async () => {
+
+        if (
+            !faqForm.question.trim() ||
+            !faqForm.answer.trim() ||
+            !faqForm.category.trim()
+        ) {
+            alert("Please fill in all FAQ fields.")
+            return;
+        }
+
         try {
             const response = await fetch("http://localhost:5000/api/faqs",{
                 method: "POST",
@@ -75,7 +85,7 @@ function KnowledgeBase() {
             <h1>Knowledge Base</h1>
             <p>Manage your FAQs and Documents.</p>
 
-            <div className="knowledge-base-tab">
+            <div className="knowledge-base-tabs">
                 <button 
                     className={activeTab === "faqs" ? "active" : ""}
                     onClick={() => setActiveTab("faqs")}
@@ -99,8 +109,11 @@ function KnowledgeBase() {
             )}
 
             {showFaqForm && activeTab === "faqs" && (
-                <div>
-                    <h2>Add new FAQ</h2>
+                <div className="faq-form">
+                    <div className="faq-form-header">
+                        <h2>Add new FAQ</h2>
+                        <p>Add a question and answer to your company's knowledge base.</p>
+                    </div>
 
                     <input 
                         type="text" 
@@ -137,13 +150,22 @@ function KnowledgeBase() {
                         }
                     />
 
-                    <button onClick={handleAddFaq}>
-                        Save FAQ
-                    </button>
+                    <div className="faq-form-actions">
+                        <button 
+                            className="save-faq-btn"
+                            onClick={handleAddFaq}
+                        >
+                            Save FAQ
+                        </button>
 
-                    <button onClick={() => setShowFaqForm(false)}>
-                        Cancel
-                    </button>                    
+                        <button
+                            className="cancel-faq-btn" 
+                            onClick={() => setShowFaqForm(false)}
+                        >
+                            Cancel
+                        </button>  
+                    </div>
+
                 </div>
             )}
 
@@ -153,13 +175,15 @@ function KnowledgeBase() {
                 ) : faqs.length === 0 ? (
                     <p>No FAQs Found</p>
                 ) : (
-                    faqs.map((faq) => (
-                        <div key={faq._id}>
-                            <h3>{faq.question}</h3>
-                            <p>{faq.answer}</p>
-                            <span>{faq.category}</span>
-                        </div>
-                    ))
+                    <div className="faq-list">
+                        {faqs.map((faq) => (
+                            <div className="faq-card" key={faq._id}>
+                                <h3>{faq.question}</h3>
+                                <p>{faq.answer}</p>
+                                <span>{faq.category}</span>
+                            </div>
+                        ))}
+                    </div>
                 )
             ) : (
                 <div>
