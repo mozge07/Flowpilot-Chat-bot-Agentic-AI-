@@ -1,5 +1,6 @@
 import "./MainContent.css";
 import AgentsPage from "./AgentsPage.jsx";
+import KnowledgeBase from "./KnowledgeBase.jsx";
 
 function MainContent({activePage}) {
 
@@ -62,7 +63,7 @@ function MainContent({activePage}) {
     ),
     "AI Agents": <AgentsPage />,
     Conversations: <h1>Conversation</h1>,
-    "Knowledge Base": <h1>Knowledge Base</h1>,
+    "Knowledge Base": <KnowledgeBase />,
     Integrations: <h1>Integration</h1>,
     Settings: <h1>Setting</h1>
   };
