@@ -41,6 +41,21 @@ function KnowledgeBase() {
         fetchFaqs();
     }, []);
 
+    useEffect(() => {
+        if (!faqMessage.text) return;
+
+        const duration = faqMessage.type === "success" ? 3000 : 4000;
+
+        const timer = setTimeout(() => {
+            setFaqMessage({
+                type: "",
+                text: ""
+            });
+        }, duration);
+
+        return () => clearTimeout(timer);
+    }, [faqMessage]);
+
     const handleAddFaq = async () => {
 
         if (
@@ -48,7 +63,11 @@ function KnowledgeBase() {
             !faqForm.answer.trim() ||
             !faqForm.category.trim()
         ) {
-            alert("Please fill in all FAQ fields.")
+            setFaqMessage({
+                type: "error",
+                text: "Please fill in all FAQ fields."
+            });
+
             return;
         }
 
@@ -130,11 +149,17 @@ function KnowledgeBase() {
                 prevFaqs.filter(faq => faq._id !== faqId)
             );
 
-            alert("FAQ deleted successfully!")
+            setFaqMessage({
+                type: "success",
+                text: "FAQ deleted successfully!"
+            });
 
         } catch(error) {
             console.error("Delete FAQ Error:", error);
-            alert(error.message);
+            setFaqMessage({
+                type: "error",
+                text: error.message
+            });
         }
     };
 
@@ -164,7 +189,7 @@ function KnowledgeBase() {
     return (
         <section className="knowledge-base-page">
             <h1>Knowledge Base</h1>
-            
+
             {faqMessage.text && (
                 <div className={`faq-message ${faqMessage.type}`}>
                     {faqMessage.text}
