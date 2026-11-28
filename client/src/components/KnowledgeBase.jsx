@@ -6,6 +6,11 @@ function KnowledgeBase() {
     const [documents, setDocuments] = useState([]);
     const [activeTab, setActiveTab] = useState("faqs");
     const [showFaqForm, setShowFaqForm] = useState(false);
+    const [editingFaqId, setEditingFaqId] = useState(null);
+    const [faqMessage, setFaqMessage] = useState({
+        type: "",
+        text: ""    
+    });
     const [faqForm, setFaqForm] = useState({
         question: "",
         answer: "",
@@ -48,13 +53,18 @@ function KnowledgeBase() {
         }
 
         try {
-            const response = await fetch("http://localhost:5000/api/faqs",{
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(faqForm)
-            });
+            const response = await fetch(
+                editingFaqId 
+                    ? `http://localhost:5000/api/faqs/${editingFaqId}`
+                    :"http://localhost:5000/api/faqs",
+                {
+                    method: editingFaqId ? "PUT" : "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(faqForm)
+                }
+            );
 
             const data = await response.json();
 
@@ -62,27 +72,105 @@ function KnowledgeBase() {
                 throw new Error(data.message || "Failed to Create FAQ");
             }
 
-            setFaqs(prevFaqs => [data.faq, ...prevFaqs]);
+            if (editingFaqId) {
+                setFaqs(prevFaqs =>
+                    prevFaqs.map(faq =>
+                        faq._id === editingFaqId ? data.faq : faq
+                    )
+                );
+            } else {
+                setFaqs(prevFaqs => [data.faq, ...prevFaqs]);
+            }
 
             setFaqForm({
                 question:"",
                 answer:"",
                 category:""
             });
-
+            
+            setEditingFaqId(null);
             setShowFaqForm(false);
 
-            alert("FAQ created Successfully!");
+            setFaqMessage({
+                type: "success",
+                text: "FAQ created successfully!"
+            });
 
         } catch(error) {
             console.error("Create FAQ Error:", error);
+            setFaqMessage({
+                type: "error",
+                text: error.message
+            });
+        }
+    };
+
+    const handleDeleteFaq = async (faqId) => {
+
+        const isConfirmed = window.confirm(
+            "Are you sure you want to delete this FAQ? This action cannot be undone."
+        );
+
+        if (!isConfirmed) return;
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/faqs/${faqId}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Failed to Delete FAQ");
+            }
+
+            setFaqs(prevFaqs => 
+                prevFaqs.filter(faq => faq._id !== faqId)
+            );
+
+            alert("FAQ deleted successfully!")
+
+        } catch(error) {
+            console.error("Delete FAQ Error:", error);
             alert(error.message);
         }
+    };
+
+    const handleEditClick = (faq) => {
+        setEditingFaqId(faq._id);
+
+        setFaqForm({
+            question: faq.question,
+            answer: faq.answer,
+            category: faq.category
+        });
+
+        setShowFaqForm(true);
+    }
+
+    const handleCancelFaq = () => {
+        setFaqForm({
+            question: "",
+            answer: "",
+            category: ""
+        });
+
+        setEditingFaqId(null);
+        setShowFaqForm(false);
     };
 
     return (
         <section className="knowledge-base-page">
             <h1>Knowledge Base</h1>
+            
+            {faqMessage.text && (
+                <div className={`faq-message ${faqMessage.type}`}>
+                    {faqMessage.text}
+                </div>
+            )}
+
             <p>Manage your FAQs and Documents.</p>
 
             <div className="knowledge-base-tabs">
@@ -111,7 +199,7 @@ function KnowledgeBase() {
             {showFaqForm && activeTab === "faqs" && (
                 <div className="faq-form">
                     <div className="faq-form-header">
-                        <h2>Add new FAQ</h2>
+                        <h2>{editingFaqId ? "Edit FAQ" : "  Add new FAQ"}</h2>
                         <p>Add a question and answer to your company's knowledge base.</p>
                     </div>
 
@@ -155,12 +243,12 @@ function KnowledgeBase() {
                             className="save-faq-btn"
                             onClick={handleAddFaq}
                         >
-                            Save FAQ
+                            {editingFaqId ? "Update FAQ" : "Save FAQ"}
                         </button>
 
                         <button
                             className="cancel-faq-btn" 
-                            onClick={() => setShowFaqForm(false)}
+                            onClick={handleCancelFaq}
                         >
                             Cancel
                         </button>  
@@ -169,7 +257,7 @@ function KnowledgeBase() {
                 </div>
             )}
 
-            {activeTab === "faqs" ? (
+            {activeTab === "faqs" && !showFaqForm && (
                 loading ? (
                     <p>Loading FAQs...</p>
                 ) : faqs.length === 0 ? (
@@ -180,17 +268,39 @@ function KnowledgeBase() {
                             <div className="faq-card" key={faq._id}>
                                 <h3>{faq.question}</h3>
                                 <p>{faq.answer}</p>
-                                <span>{faq.category}</span>
+
+                                <div className="faq-card-footer">
+                                    <span className="faq-category">{faq.category}</span>
+
+                                    <div className="faq-actions">
+                                        <button 
+                                            className="edit-faq-btn"
+                                            onClick={() => handleEditClick(faq)}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            className="delete-faq-btn"
+                                            onClick={() => handleDeleteFaq(faq._id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+
+                                </div>
+
                             </div>
                         ))}
                     </div>
                 )
-            ) : (
+            )}
+
+            {activeTab === "documents" && (
                 <div>
                     <h2>Documents</h2>
                     <p>No documents uploaded yet.</p>
                 </div>
-            )}           
+            )}          
 
         </section>
     );
